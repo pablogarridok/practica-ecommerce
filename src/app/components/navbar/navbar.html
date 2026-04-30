@@ -1,0 +1,35 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a routerLink="/">👟 KICKstore</a>
+  </div>
+
+  <div class="navbar-links">
+    <a routerLink="/">Inicio</a>
+    <a routerLink="/catalog">Catálogo</a>
+
+    @if (auth.isAdmin) {
+      <a routerLink="/admin/products">Admin Productos</a>
+      <a routerLink="/admin/orders">Admin Pedidos</a>
+    }
+
+    @if (auth.isLoggedIn && !auth.isAdmin) {
+      <a routerLink="/my-orders">Mis Pedidos</a>
+    }
+  </div>
+
+  <div class="navbar-actions">
+    @if (!auth.isLoggedIn) {
+      <a routerLink="/login" class="btn-login">Iniciar Sesión</a>
+    } @else {
+      <span class="username">{{ auth.currentUser()?.user_metadata?.full_name }}</span>
+
+      @if (!auth.isAdmin) {
+        <a routerLink="/cart" class="cart-btn">
+🛒        <span class="cart-count">{{ totalItems }}</span>
+        </a>
+      }
+
+      <button (click)="auth.logout()" class="btn-logout">Salir</button>
+    }
+  </div>
+</nav>
