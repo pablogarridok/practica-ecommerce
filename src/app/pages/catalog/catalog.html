@@ -1,1 +1,43 @@
-<p>catalog works!</p>
+<div class="catalog">
+  <div class="catalog-header">
+    <h1>Catálogo</h1>
+    <div class="filters">
+      <input
+        type="text"
+        placeholder="Buscar por nombre o marca..."
+        [(ngModel)]="search"
+        (input)="applyFilters()"
+        class="search-input"
+      />
+      <select [(ngModel)]="selectedCategory" (change)="applyFilters()" class="category-select">
+        <option value="">Todas las categorías</option>
+        <option value="running">Running</option>
+        <option value="basketball">Basketball</option>
+        <option value="lifestyle">Lifestyle</option>
+        <option value="training">Training</option>
+      </select>
+      <button (click)="clearFilters()" class="btn-clear">Limpiar</button>
+    </div>
+  </div>
+
+  <div class="products-grid">
+    @for (product of filtered(); track product.id) {
+      <a [routerLink]="['/catalog', product.slug]" class="product-card">
+        <div class="product-img">
+          @if (product.image_url) {
+            <img [src]="product.image_url" [alt]="product.name" />
+          } @else {
+            <div class="no-img">👟</div>
+          }
+        </div>
+        <div class="product-info">
+          <h3>{{ product.name }}</h3>
+          <p class="brand">{{ product.brand }}</p>
+          <p class="price">{{ product.price | currency:'EUR' }}</p>
+        </div>
+      </a>
+    } @empty {
+      <p class="no-results">No se encontraron productos.</p>
+    }
+  </div>
+</div>

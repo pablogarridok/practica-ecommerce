@@ -1,1 +1,58 @@
-<p>product-detail works!</p>
+<div class="detail-page">
+  @if (product()) {
+    <div class="detail-card">
+      <div class="detail-img">
+        @if (product().image_url) {
+          <img [src]="product().image_url" [alt]="product().name" />
+        } @else {
+          <div class="no-img">👟</div>
+        }
+      </div>
+
+      <div class="detail-info">
+        <p class="brand">{{ product().brand }}</p>
+        <h1>{{ product().name }}</h1>
+        <p class="price">{{ product().price | currency:'EUR' }}</p>
+        <p class="description">{{ product().description }}</p>
+
+        <div class="sizes">
+          <p class="label">Talla</p>
+          <div class="sizes-grid">
+            @for (size of product().sizes; track size) {
+              <button
+                class="size-btn"
+                [class.selected]="selectedSize === size"
+                (click)="selectedSize = size">
+                {{ size }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="quantity">
+          <p class="label">Cantidad</p>
+          <div class="qty-control">
+            <button (click)="quantity = quantity > 1 ? quantity - 1 : 1">−</button>
+            <span>{{ quantity }}</span>
+            <button (click)="quantity = quantity + 1">+</button>
+          </div>
+        </div>
+
+        @if (auth.isLoggedIn && !auth.isAdmin) {
+          <button
+            (click)="addToCart()"
+            [disabled]="!selectedSize"
+            class="btn-cart">
+            {{ added() ? '✅ Añadido!' : '🛒 Añadir al carrito' }}
+          </button>
+        } @else if (!auth.isLoggedIn) {
+          <p class="login-hint">
+            <a routerLink="/login">Inicia sesión</a> para comprar
+          </p>
+        }
+      </div>
+    </div>
+  } @else {
+    <div class="loading">Cargando producto...</div>
+  }
+</div>

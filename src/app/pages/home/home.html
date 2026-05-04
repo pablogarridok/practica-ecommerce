@@ -1,1 +1,52 @@
-<p>home works!</p>
+<div class="home">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Las mejores zapatillas<br><span>al mejor precio</span></h1>
+      <p>Descubre nuestra colección exclusiva de sneakers para todos los estilos</p>
+      <a routerLink="/catalog" class="btn-hero">Ver Catálogo</a>
+    </div>
+  </section>
+
+  <!-- Productos destacados -->
+  <section class="featured">
+    <h2>Productos Destacados</h2>
+    <div class="products-grid">
+      @for (product of featured(); track product.id) {
+        <a [routerLink]="['/catalog', product.slug]" class="product-card">
+          <div class="product-img">
+            @if (product.image_url) {
+              <img [src]="product.image_url" [alt]="product.name" />
+            } @else {
+              <div class="no-img">👟</div>
+            }
+          </div>
+          <div class="product-info">
+            <h3>{{ product.name }}</h3>
+            <p class="brand">{{ product.brand }}</p>
+            <p class="price">{{ product.price | currency:'EUR' }}</p>
+          </div>
+        </a>
+      }
+    </div>
+  </section>
+
+  <!-- Categorías -->
+  <section class="categories">
+    <h2>Comprar por Categoría</h2>
+    <div class="categories-grid">
+      <a routerLink="/catalog" [queryParams]="{category: 'running'}" class="category-card">
+        <span>🏃</span><p>Running</p>
+      </a>
+      <a routerLink="/catalog" [queryParams]="{category: 'basketball'}" class="category-card">
+        <span>🏀</span><p>Basketball</p>
+      </a>
+      <a routerLink="/catalog" [queryParams]="{category: 'lifestyle'}" class="category-card">
+        <span>👟</span><p>Lifestyle</p>
+      </a>
+      <a routerLink="/catalog" [queryParams]="{category: 'training'}" class="category-card">
+        <span>💪</span><p>Training</p>
+      </a>
+    </div>
+  </section>
+</div>
