@@ -1,0 +1,96 @@
+<div class="admin-page">
+  <div class="admin-header">
+    <h1>Gestión de Productos</h1>
+    <button (click)="openCreate()" class="btn-add">+ Añadir Producto</button>
+  </div>
+
+  @if (showForm()) {
+    <div class="modal-overlay">
+      <div class="modal">
+        <h2>{{ editing() ? 'Editar Producto' : 'Nuevo Producto' }}</h2>
+
+        @if (error()) {
+          <p class="error">{{ error() }}</p>
+        }
+
+        <div class="form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nombre</label>
+              <input type="text" [(ngModel)]="form.name" />
+            </div>
+            <div class="form-group">
+              <label>Marca</label>
+              <input type="text" [(ngModel)]="form.brand" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Precio</label>
+              <input type="number" [(ngModel)]="form.price" />
+            </div>
+            <div class="form-group">
+              <label>Stock</label>
+              <input type="number" [(ngModel)]="form.stock" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Descripción</label>
+            <textarea [(ngModel)]="form.description"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Tallas (separadas por comas)</label>
+            <input type="text" [(ngModel)]="form.sizes" placeholder="38, 39, 40, 41, 42" />
+          </div>
+          <div class="form-group">
+            <label>Imagen</label>
+            <input type="file" accept="image/*" (change)="onFileChange($event)" />
+          </div>
+
+          <div class="form-actions">
+            <button (click)="showForm.set(false)" class="btn-cancel">Cancelar</button>
+            <button (click)="onSubmit()" [disabled]="loading()" class="btn-save">
+              {{ loading() ? 'Guardando...' : 'Guardar' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <div class="products-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Imagen</th>
+          <th>Nombre</th>
+          <th>Marca</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (product of products(); track product.id) {
+          <tr>
+            <td>
+              @if (product.image_url) {
+                <img [src]="product.image_url" [alt]="product.name" class="table-img" />
+              } @else {
+                <span>👟</span>
+              }
+            </td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.brand }}</td>
+            <td>{{ product.price | currency:'EUR' }}</td>
+            <td>{{ product.stock }}</td>
+            <td class="actions">
+              <button (click)="openEdit(product)" class="btn-edit">Editar</button>
+              <button (click)="onDelete(product.id)" class="btn-delete">Eliminar</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
