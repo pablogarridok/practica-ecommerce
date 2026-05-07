@@ -11,7 +11,12 @@ const app  = express()
 const PORT = process.env.PORT || 3000
 
 // Middlewares globales
-app.use(cors({ origin: process.env.FRONTEND_URL }))
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}))
+
 app.use(express.json())
 
 // Rutas

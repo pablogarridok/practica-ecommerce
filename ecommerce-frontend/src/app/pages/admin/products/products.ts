@@ -68,26 +68,39 @@ export class Products implements OnInit {
   }
 
   async onSubmit() {
-    this.loading.set(true);
-    this.error.set('');
-    try {
-      const formData = new FormData();
-      Object.entries(this.form).forEach(([k, v]) => formData.append(k, v as string));
-      if (this.selectedFile) formData.append('image', this.selectedFile);
+  this.loading.set(true);
+  this.error.set('');
+  try {
+    const formData = new FormData();
+    formData.append('name', this.form.name);
+    formData.append('brand', this.form.brand);
+    formData.append('price', this.form.price);
+    formData.append('stock', this.form.stock);
+    formData.append('description', this.form.description);
+    formData.append('category_id', this.form.category_id);
 
-      if (this.editing()) {
-        await this.productsService.update(this.editing().id, formData);
-      } else {
-        await this.productsService.create(formData);
-      }
-      this.showForm.set(false);
-      await this.loadProducts();
-    } catch (e: any) {
-      this.error.set(e.message ?? 'Error al guardar');
-    } finally {
-      this.loading.set(false);
+    // Convertir tallas a JSON array
+    const sizesArray = this.form.sizes
+      .split(',')
+      .map((s: string) => s.trim())
+      .filter((s: string) => s.length > 0);
+    formData.append('sizes', JSON.stringify(sizesArray));
+
+    if (this.selectedFile) formData.append('image', this.selectedFile);
+
+    if (this.editing()) {
+      await this.productsService.update(this.editing().id, formData);
+    } else {
+      await this.productsService.create(formData);
     }
+    this.showForm.set(false);
+    await this.loadProducts();
+  } catch (e: any) {
+    this.error.set(e.message ?? 'Error al guardar');
+  } finally {
+    this.loading.set(false);
   }
+}
 
   async onDelete(id: string) {
     if (!confirm('¿Seguro que quieres eliminar este producto?')) return;
