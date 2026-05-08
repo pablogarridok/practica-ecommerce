@@ -37,21 +37,20 @@ export class Catalog implements OnInit {
   }
 
   applyFilters() {
-    let result = this.allProducts();
-    if (this.search) {
-      result = result.filter(p =>
-        p.name.toLowerCase().includes(this.search.toLowerCase()) ||
-        p.brand?.toLowerCase().includes(this.search.toLowerCase())
-      );
-    }
-    if (this.selectedCategory) {
-      result = result.filter(p =>
-        p.category?.slug === this.selectedCategory ||
-        p.category?.name?.toLowerCase() === this.selectedCategory.toLowerCase()
-      );
-    }
-    this.filtered.set(result);
+  let result = this.allProducts();
+  if (this.search) {
+    result = result.filter(p =>
+      p.name.toLowerCase().includes(this.search.toLowerCase()) ||
+      p.brand?.toLowerCase().includes(this.search.toLowerCase())
+    );
   }
+  if (this.selectedCategory) {
+    result = result.filter(p =>
+      p.categories?.slug === this.selectedCategory
+    );
+  }
+  this.filtered.set(result);
+}
 
   clearFilters() {
     this.search = '';

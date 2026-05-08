@@ -1,119 +1,129 @@
 .detail-page {
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 0 2rem;
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 0 4rem;
 }
 
 .detail-card {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  background: white;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  gap: 4rem;
+  background: var(--white);
+  border: 1px solid var(--light-gray);
 }
 
 .detail-img {
-  height: 450px;
-  background: #f5f5f5;
+  height: 550px;
+  background: var(--light-gray);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
 }
 
-.detail-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.no-img { font-size: 6rem; }
+.detail-img img { width: 100%; height: 100%; object-fit: cover; }
+.no-img { font-size: 6rem; opacity: 0.3; }
 
 .detail-info {
-  padding: 2rem 2rem 2rem 0;
+  padding: 3rem 3rem 3rem 0;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.2rem;
 }
 
-.brand { color: #888; font-size: 0.95rem; text-transform: uppercase; }
-
-.detail-info h1 { font-size: 1.8rem; font-weight: bold; }
-
-.price { font-size: 1.8rem; font-weight: bold; color: #f0a500; }
-
-.description { color: #555; line-height: 1.6; }
-
-.label { font-weight: bold; margin-bottom: 0.5rem; }
-
-.sizes-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+.brand {
+  color: var(--gray);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
+
+.detail-info h1 {
+  font-size: 2.2rem;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--brown);
+}
+
+.description {
+  color: var(--gray);
+  line-height: 1.8;
+  font-size: 0.95rem;
+  border-top: 1px solid var(--light-gray);
+  padding-top: 1.2rem;
+}
+
+.label {
+  font-size: 0.8rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--gray);
+  margin-bottom: 0.5rem;
+}
+
+.sizes-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
 .size-btn {
   padding: 0.5rem 1rem;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  background: white;
+  border: 1px solid var(--light-gray);
+  background: var(--white);
   cursor: pointer;
-  font-weight: bold;
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
   transition: all 0.2s;
 }
 
-.size-btn:hover { border-color: #111; }
-.size-btn.selected { border-color: #111; background: #111; color: white; }
+.size-btn:hover { border-color: var(--dark); }
+.size-btn.selected { border-color: var(--dark); background: var(--dark); color: var(--white); }
 
-.qty-control {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
+.qty-control { display: flex; align-items: center; gap: 1rem; }
 
 .qty-control button {
   width: 36px;
   height: 36px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  background: white;
+  border: 1px solid var(--light-gray);
+  background: var(--white);
   font-size: 1.2rem;
   cursor: pointer;
   transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
 }
 
-.qty-control button:hover { border-color: #111; }
-
-.qty-control span { font-size: 1.2rem; font-weight: bold; }
+.qty-control button:hover { border-color: var(--dark); }
+.qty-control span { font-size: 1.1rem; font-weight: 600; min-width: 30px; text-align: center; }
 
 .btn-cart {
-  background: #111;
-  color: white;
-  padding: 1rem;
+  background: var(--dark);
+  color: var(--white);
+  padding: 1.1rem;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: bold;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
   cursor: pointer;
   transition: background 0.2s;
   margin-top: 0.5rem;
+  font-family: 'Inter', sans-serif;
 }
 
 .btn-cart:hover { background: #333; }
 .btn-cart:disabled { background: #999; cursor: not-allowed; }
 
-.login-hint {
-  color: #666;
-  font-size: 0.95rem;
-}
-
-.login-hint a { color: #111; font-weight: bold; }
+.login-hint { color: var(--gray); font-size: 0.9rem; }
+.login-hint a { color: var(--dark); font-weight: 600; border-bottom: 1px solid var(--dark); }
 
 .loading {
   text-align: center;
-  padding: 4rem;
-  color: #888;
-  font-size: 1.2rem;
+  padding: 6rem;
+  color: var(--gray);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
 }

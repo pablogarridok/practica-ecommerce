@@ -24,6 +24,7 @@
               <input type="text" [(ngModel)]="form.brand" />
             </div>
           </div>
+
           <div class="form-row">
             <div class="form-group">
               <label>Precio</label>
@@ -76,18 +77,18 @@
             <td>
               @if (product.image_url) {
                 <img [src]="product.image_url" [alt]="product.name" class="table-img" />
-              } @else {
-                <span>👟</span>
               }
             </td>
             <td>{{ product.name }}</td>
             <td>{{ product.brand }}</td>
             <td>{{ product.price | currency:'EUR' }}</td>
             <td>{{ product.stock }}</td>
-            <td class="actions">
-              <button (click)="openEdit(product)" class="btn-edit">Editar</button>
-              <button (click)="onDelete(product.id)" class="btn-delete">Eliminar</button>
-            </td>
+            <td>
+  <div class="actions">
+    <button (click)="openEdit(product)" class="btn-edit">Editar</button>
+    <button (click)="onDelete(product.id)" class="btn-delete">Eliminar</button>
+  </div>
+</td>
           </tr>
         }
       </tbody>
