@@ -38,7 +38,7 @@ export class ProductDetail implements OnInit {
 
   addToCart() {
     if (!this.selectedSize) return;
-    this.cart.addItem(this.product(), this.selectedSize, this.quantity);
+    this.cart.addItem(this.product(), this.selectedSize, 1);
     this.added.set(true);
     setTimeout(() => this.added.set(false), 2000);
   }

@@ -29,15 +29,6 @@
           </div>
         </div>
 
-        <div class="quantity">
-          <p class="label">Cantidad</p>
-          <div class="qty-control">
-            <button (click)="quantity = quantity > 1 ? quantity - 1 : 1">−</button>
-            <span>{{ quantity }}</span>
-            <button (click)="quantity = quantity + 1">+</button>
-          </div>
-        </div>
-
         @if (auth.isLoggedIn && !auth.isAdmin) {
           <button
             (click)="addToCart()"

@@ -30,7 +30,10 @@ export const getProducts = async (req, res) => {
 
   const { data, error, count } = await query
 
-  if (error) return res.status(500).json({ error: error.message })
+  if (error) {
+  console.error('Error creando producto:', error)
+  return res.status(500).json({ error: error.message })
+}
   res.json({ data, total: count, page: Number(page), limit: Number(limit) })
 }
 
@@ -49,20 +52,33 @@ export const getProductBySlug = async (req, res) => {
 }
 
 export const createProduct = async (req, res) => {
+  console.log('Body recibido:', req.body)
+  console.log('Archivo recibido:', req.file)
+  
   const body = { ...req.body }
 
-  // Subir imagen a Cloudinary si viene
   let image_url = null
   if (req.file) {
-    const result = await uploadToCloudinary(req.file.buffer)
-    image_url = result.secure_url
+    try {
+      const result = await uploadToCloudinary(req.file.buffer)
+      image_url = result.secure_url
+      console.log('Imagen subida:', image_url)
+    } catch (cloudErr) {
+      console.error('Error Cloudinary:', cloudErr)
+      return res.status(500).json({ error: 'Error subiendo imagen' })
+    }
   }
 
-  // Parsear sizes si viene como string JSON
   let sizes = []
   if (body.sizes && typeof body.sizes === 'string') {
-    sizes = JSON.parse(body.sizes)
+    try {
+      sizes = JSON.parse(body.sizes)
+    } catch (e) {
+      sizes = body.sizes.split(',').map(s => s.trim()).filter(s => s.length > 0)
+    }
   }
+
+  console.log('Sizes parseadas:', sizes)
 
   const { data, error } = await supabase.rpc('insert_product', {
     p_name:        body.name,
@@ -75,7 +91,11 @@ export const createProduct = async (req, res) => {
     p_image_url:   image_url
   })
 
-  if (error) return res.status(500).json({ error: error.message })
+  if (error) {
+    console.error('Error Supabase:', error)
+    return res.status(500).json({ error: error.message })
+  }
+  
   res.status(201).json(data)
 }
 

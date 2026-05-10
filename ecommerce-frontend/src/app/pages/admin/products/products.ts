@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductsService } from '../../../services/products';
+import { SupabaseService } from '../../../services/supabase';
 
 @Component({
   selector: 'app-admin-products',
@@ -11,8 +12,10 @@ import { ProductsService } from '../../../services/products';
 })
 export class Products implements OnInit {
   productsService = inject(ProductsService);
+  supabase = inject(SupabaseService);
 
   products = signal<any[]>([]);
+  categories = signal<any[]>([]);
   showForm = signal(false);
   editing = signal<any>(null);
   loading = signal(false);
@@ -29,7 +32,16 @@ export class Products implements OnInit {
   }
 
   async ngOnInit() {
+    await this.loadCategories();
     await this.loadProducts();
+  }
+
+  async loadCategories() {
+    const { data } = await this.supabase.client
+      .from('categories')
+      .select('id, name')
+      .order('name');
+    this.categories.set(data ?? []);
   }
 
   async loadProducts() {
@@ -68,39 +80,38 @@ export class Products implements OnInit {
   }
 
   async onSubmit() {
-  this.loading.set(true);
-  this.error.set('');
-  try {
-    const formData = new FormData();
-    formData.append('name', this.form.name);
-    formData.append('brand', this.form.brand);
-    formData.append('price', this.form.price);
-    formData.append('stock', this.form.stock);
-    formData.append('description', this.form.description);
-    formData.append('category_id', this.form.category_id);
+    this.loading.set(true);
+    this.error.set('');
+    try {
+      const formData = new FormData();
+      formData.append('name', this.form.name);
+      formData.append('brand', this.form.brand);
+      formData.append('price', this.form.price);
+      formData.append('stock', this.form.stock);
+      formData.append('description', this.form.description);
+      formData.append('category_id', this.form.category_id);
 
-    // Convertir tallas a JSON array
-    const sizesArray = this.form.sizes
-      .split(',')
-      .map((s: string) => s.trim())
-      .filter((s: string) => s.length > 0);
-    formData.append('sizes', JSON.stringify(sizesArray));
+      const sizesArray = this.form.sizes
+        .split(',')
+        .map((s: string) => s.trim())
+        .filter((s: string) => s.length > 0);
+      formData.append('sizes', JSON.stringify(sizesArray));
 
-    if (this.selectedFile) formData.append('image', this.selectedFile);
+      if (this.selectedFile) formData.append('image', this.selectedFile);
 
-    if (this.editing()) {
-      await this.productsService.update(this.editing().id, formData);
-    } else {
-      await this.productsService.create(formData);
+      if (this.editing()) {
+        await this.productsService.update(this.editing().id, formData);
+      } else {
+        await this.productsService.create(formData);
+      }
+      this.showForm.set(false);
+      await this.loadProducts();
+    } catch (e: any) {
+      this.error.set(e.message ?? 'Error al guardar');
+    } finally {
+      this.loading.set(false);
     }
-    this.showForm.set(false);
-    await this.loadProducts();
-  } catch (e: any) {
-    this.error.set(e.message ?? 'Error al guardar');
-  } finally {
-    this.loading.set(false);
   }
-}
 
   async onDelete(id: string) {
     if (!confirm('¿Seguro que quieres eliminar este producto?')) return;
